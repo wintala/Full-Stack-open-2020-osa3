@@ -1,14 +1,14 @@
 const baseUrl = '/api/persons'
 const express = require('express')
-const morgan = require('morgan')
-const cors = require('cors')
-
 const app = express()
 
+const cors = require('cors')
 app.use(cors)
+
 app.use(express.json())
 app.use(express.static('build'))
 
+const morgan = require('morgan')
 morgan.token('data', (req, res) => { return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
@@ -47,7 +47,7 @@ app.get('/info', (req, res) => {
 })
 
 
-app.get(`${baseUrl}:id`, (request, response) => {
+app.get(`${baseUrl}/:id`, (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(x => x.id === id)
     if (person) {
@@ -59,7 +59,7 @@ app.get(`${baseUrl}:id`, (request, response) => {
 }) 
 
 
-app.delete(`${baseUrl}:id`, (request, response) => {
+app.delete(`${baseUrl}/:id`, (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(x => x.id !== id)
   

@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static("build"))
 
-morgan.token('data', (req, res) => { return JSON.stringify(req.body)})
+morgan.token('data', (req) => { return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 
@@ -43,14 +43,14 @@ app.get(`${baseUrl}/:id`, (request, response, next) => {
 app.delete(`${baseUrl}/:id`, (request, response, next) => {
   const id = request.params.id
   Person.findByIdAndRemove(id)
-  .then(result => {
+  .then(() => {
     response.status(204).end()
   })
   .catch(error => next(error))
 })
 
 
-const generateId = (maxId) => (Math.floor(Math.random() * (maxId + 1)))
+// const generateId = (maxId) => (Math.floor(Math.random() * (maxId + 1)))
 
 
 app.post(baseUrl, (request, response, next) => {
